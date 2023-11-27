@@ -14,16 +14,28 @@ namespace MarcVallverduAhorcado
         static string palabraSecreta = "DINOSAURIO";
         List<char> letrasPalabraSecreta = palabraSecreta.ToList();
 
+        int contadorPalabrasCorrectas
+        {
+            get
+            {
+
+                return (int)Session["contadorPalabrasCorrectas"];
+            }
+            set
+            {
+                Session["contadorPalabrasCorrectas"] = value;
+            }
+        }
         int contadorAhorcado
         {
             get
             {
 
-                return (int)ViewState["contadorAhorcado"];
+                return (int)Session["contadorAhorcado"];
             }
             set
             {
-                ViewState["contadorAhorcado"] = value;
+                Session["contadorAhorcado"] = value;
             }
         }
         int contadorIntentos
@@ -31,26 +43,26 @@ namespace MarcVallverduAhorcado
             get
             {
 
-                return (int)ViewState["contadorIntentos"];
+                return (int)Session["contadorIntentos"];
             }
             set
             {
-                ViewState["contadorIntentos"] = value;
+                Session["contadorIntentos"] = value;
             }
         }
         List<char> listPalabraDescubierta
         {
             get
             {
-                if(ViewState["palabra"] == null)
+                if(Session["palabra"] == null)
                 {
-                    ViewState["palabra"] = new List<char>();
+                    Session["palabra"] = new List<char>();
                 }
-                return ViewState["palabra"] as List<char>;
+                return Session["palabra"] as List<char>;
             }
             set
             {
-                ViewState["palabra"] = value;
+                Session["palabra"] = value;
             }
         }
 
@@ -67,6 +79,8 @@ namespace MarcVallverduAhorcado
 
         protected void IniciarJuego()
         {
+            //Reiniciamos las variables con los valores iniciales
+            contadorPalabrasCorrectas = 0;
             contadorAhorcado = 0;
             contadorIntentos = 8;
             listPalabraDescubierta = new List<char>();
@@ -105,6 +119,7 @@ namespace MarcVallverduAhorcado
                 if (Convert.ToChar(txbLetraSeleccionada.Text.ToUpper()).Equals(letrasPalabraSecreta[i]))
                 {
                     listPalabraDescubierta[i] = letrasPalabraSecreta[i];
+                    contadorPalabrasCorrectas ++;
                     acierto = true;
                 }
 
@@ -119,12 +134,6 @@ namespace MarcVallverduAhorcado
                     IniciarJuego();
                 }
             }
-
-            int contadorPalabrasCorrectas = 0;
-
-            for (int i = 0; i < listPalabraDescubierta.Count; i++)
-                if (listPalabraDescubierta[i].Equals(letrasPalabraSecreta[i]))
-                    contadorPalabrasCorrectas++;
 
             if (contadorPalabrasCorrectas >= 10)
             {
