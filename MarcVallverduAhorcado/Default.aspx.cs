@@ -11,9 +11,11 @@ namespace MarcVallverduAhorcado
 {
     public partial class _Default : Page
     {
+        //Variables estáticas
         static string palabraSecreta = "DINOSAURIO";
-        List<char> letrasPalabraSecreta = palabraSecreta.ToList();
+        static List<char> letrasPalabraSecreta = palabraSecreta.ToList();
 
+        //Variables de sesión
         int contadorPalabrasCorrectas
         {
             get
@@ -69,14 +71,17 @@ namespace MarcVallverduAhorcado
         protected void Page_Load(object sender, EventArgs e)
         {
             if(!IsPostBack)
-            {
                 IniciarJuego();
-            }
-            else
-            {
-            }
         }
 
+        //Métodos botones
+        protected void txbLetraSeleccionada_TextChanged(object sender, EventArgs e)
+        {
+            if (txbLetraSeleccionada.Text.Length == 1)
+                ComprobarLetraIntroducida();
+        }
+
+        //Métodos logica
         protected void IniciarJuego()
         {
             //Reiniciamos las variables con los valores iniciales
@@ -102,12 +107,6 @@ namespace MarcVallverduAhorcado
 
             foreach (char letra in listPalabraDescubierta)
                 labPalabraDescubierta.Text += letra + " ";
-        }
-
-        protected void txbLetraSeleccionada_TextChanged(object sender, EventArgs e)
-        {
-            if (txbLetraSeleccionada.Text.Length == 1)
-                ComprobarLetraIntroducida();
         }
 
         protected void ComprobarLetraIntroducida()
